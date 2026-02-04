@@ -29,6 +29,7 @@ body {
   border: 2px solid #555;
   padding: 20px;
   display: inline-block;
+  cursor: pointer;
 }
 
 .controls button,
@@ -49,14 +50,15 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
-/* Modal */
+
+/* SET TIMER SCREEN */
 #setTimerModal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.85);
   display: flex;
   justify-content: center;
   align-items: center;

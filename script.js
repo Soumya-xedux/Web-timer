@@ -10,23 +10,22 @@ const startStopBtn = document.getElementById("startStopBtn");
 const resetBtn = document.getElementById("resetBtn");
 const setTimerBtn = document.getElementById("setTimerBtn");
 const fullscreenBtn = document.getElementById("fullscreenBtn");
+const keepScreenCheckbox = document.getElementById("keepScreenOn");
 
-// Show set timer on clicking time
-display.addEventListener("click", () => {
-  if (!isRunning) modal.classList.remove("hidden");
-});
-
-// Fullscreen
-fullscreenBtn.onclick = () => {
-nction goFullscreen() {
-  document.documentElement.requestFullscreen?.();
+// ---------- FULLSCREEN ----------
+function goFullscreen() {
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  }
 }
 
-// Wake Lock
+fullscreenBtn.addEventListener("click", goFullscreen);
+
+// ---------- WAKE LOCK ----------
 async function requestWakeLock() {
   try {
     wakeLock = await navigator.wakeLock.request("screen");
-  } catch (e) {
+  } catch {
     alert(
       "Your browser does not support keeping the screen awake.\n\n" +
       "Please increase screen timeout in phone settings."
@@ -35,11 +34,13 @@ async function requestWakeLock() {
 }
 
 function releaseWakeLock() {
-  wakeLock?.release();
-  wakeLock = null;
+  if (wakeLock) {
+    wakeLock.release();
+    wakeLock = null;
+  }
 }
 
-// Timer helpers
+// ---------- DISPLAY ----------
 function updateDisplay(sec) {
   const h = String(Math.floor(sec / 3600)).padStart(2, "0");
   const m = String(Math.floor((sec % 3600) / 60)).padStart(2, "0");
@@ -47,28 +48,16 @@ function updateDisplay(sec) {
   display.textContent = `${h}:${m}:${s}`;
 }
 
-// Set timer
-setTimerBtn.onclick = () => {
-  const timeValue = document.getElementById("timeInput").value;
-  const [h, m, s] = timeValue.split(":").map(Number);
-  remainingSeconds = h * 3600 + m * 60 + s;
-  updateDisplay(remainingSeconds);
-  modal.classList.add("hidden");
-};
+// ---------- OPEN SET TIMER SCREEN ----------
+display.addEventListener("click", () => {
+  if (!isRunning) modal.classList.remove("hidden");
+});
 
-// Start / Stop
-startStopBtn.onclick = () => {
-  if (isRunning) {
-    clearInterval(timerInterval);
-    releaseWakeLock();
-    startStopBtn.textContent = "Start";
-    isRunning = false;
-    return;
-  }
+// ---------- START TIMER CORE ----------
+function startTimer() {
+  if (remainingSeconds <= 0 || isRunning) return;
 
-  if (remainingSeconds <= 0) return;
-
-  if (document.getElementById("keepScreenOn").checked) {
+  if (keepScreenCheckbox.checked) {
     requestWakeLock();
   }
 
@@ -84,22 +73,51 @@ startStopBtn.onclick = () => {
       clearInterval(timerInterval);
       releaseWakeLock();
       isRunning = false;
+      startStopBtn.textContent = "Start";
       alert("Time’s up!");
     }
   }, 1000);
-};
+}
 
-// Reset
-resetBtn.onclick = () => {
+// ---------- SET & AUTO START ----------
+setTimerBtn.addEventListener("click", () => {
+  const timeValue = document.getElementById("timeInput").value;
+  if (!timeValue) return;
+
+  const [h, m, s] = timeValue.split(":").map(Number);
+  remainingSeconds = h * 3600 + m * 60 + s;
+
+  if (remainingSeconds <= 0) return;
+
+  updateDisplay(remainingSeconds);
+  modal.classList.add("hidden");
+
+  startTimer(); // 🔥 AUTO START
+});
+
+// ---------- START / STOP ----------
+startStopBtn.addEventListener("click", () => {
+  if (isRunning) {
+    clearInterval(timerInterval);
+    releaseWakeLock();
+    isRunning = false;
+    startStopBtn.textContent = "Start";
+  } else {
+    startTimer();
+  }
+});
+
+// ---------- RESET ----------
+resetBtn.addEventListener("click", () => {
   clearInterval(timerInterval);
   releaseWakeLock();
   remainingSeconds = 0;
   updateDisplay(0);
   isRunning = false;
   startStopBtn.textContent = "Start";
-};
+});
 
-// Re-acquire wake lock on tab focus
+// ---------- VISIBILITY ----------
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible" && wakeLock) {
     requestWakeLock();
