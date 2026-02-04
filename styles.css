@@ -1,0 +1,88 @@
+* {
+  box-sizing: border-box;
+  font-family: monospace;
+}
+
+body {
+  margin: 0;
+  background: #0b0b0b;
+  color: #dcdcdc;
+  text-align: center;
+}
+
+#timerScreen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+#fullscreenBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+#timeDisplay {
+  font-size: 64px;
+  border: 2px solid #555;
+  padding: 20px;
+  display: inline-block;
+}
+
+.controls button,
+#fullscreenBtn,
+#setTimerBtn {
+  background: transparent;
+  color: #dcdcdc;
+  border: 2px solid #555;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Modal */
+#setTimerModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  border: 2px solid #555;
+  padding: 30px;
+  background: #111;
+  width: 300px;
+}
+
+.modal input {
+  width: 100%;
+  font-size: 18px;
+  padding: 8px;
+  margin-bottom: 15px;
+}
+
+.checkbox {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.seo {
+  padding: 40px;
+  max-width: 700px;
+  margin: auto;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Fullscreen Online Timer – Keep Screen On Until Timer Ends</title>
+
+  <meta name="description"
+    content="Free fullscreen online timer that keeps your phone or desktop screen awake until countdown ends. No login required." />
+
+  <meta name="keywords"
+    content="fullscreen timer, online timer, keep screen on timer, countdown timer mobile" />
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+
+<body>
+  <!-- MAIN TIMER SCREEN -->
+  <main id="timerScreen">
+    <button id="fullscreenBtn">Full Screen</button>
+
+    <div id="timeDisplay">00:00:00</div>
+
+    <div class="controls">
+      <button id="startStopBtn">Start</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </main>
+
+  <!-- SET TIMER MODAL -->
+  <section id="setTimerModal" class="hidden">
+    <div class="modal">
+      <h1>Set Timer</h1>
+
+      <input type="time" id="timeInput" step="1" value="00:30:00" />
+
+      <label class="checkbox">
+        <input type="checkbox" id="keepScreenOn" />
+        Don’t turn off screen until timer ends
+      </label>
+
+      <button id="setTimerBtn">Set Timer</button>
+    </div>
+  </section>
+
+  <!-- SEO CONTENT -->
+  <section class="seo">
+    <h2>Fullscreen Timer That Keeps Screen Awake</h2>
+    <p>
+      This free online fullscreen timer prevents your phone or computer screen
+      from turning off until the countdown reaches zero. Ideal for workouts,
+      study sessions, presentations, and meetings.
+    </p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
